@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% load news_filters %}
+{% block title %}
+搜索
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/search/search.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/news/index.min.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="main">
+    <div class="wrapper">
+        <div class="main-content-wrapper">
+            <div class="search-group">
+                <form action="" method="get">
+                    <!-- action为空时发送到该页面-->
+                    <input type="text" name="q" class="search-input" placeholder="请输入关键字" value="{{query}}">
+                    <input type="submit" class="search-btn" value="搜索">
+                </form>
+            </div>
+            <div class="recommend-group">
+                <p class="recommend-title">热门推荐</p>
+                <ul class="recommend-list">
+                    {% for result in page.object_list %}
+                    {% with result.object as news %}
+                    <li>
+                        <div class="thumbnail-group">
+                            <a href="#">
+                                <img src="{{ news.thumbnail }}" alt="">
+                            </a>
+                        </div>
+                        <div class="news-group">
+                            <p class="title">
+                                <a href="#">{{ news.title }}</a>
+                            </p>
+                            <p class="desc">
+                                {{news.desc}}
+                            </p>
+                            <p class="more">
+                                <span class="category">{{news.category.name}}</span>
+                                <span class="pub-time">{{news.pub_time|time_since}}</span>
+                                <span class="author">{{news.author.username}}</span>
+                            </p>
+                        </div>
+                    </li>
+                    {% endwith %}
+                    {% empty %}
+                    <ul class="recommend-list">
+                        <li>
+                            <div class="newsgroup">
+                                <p class="title">
+                                    没有搜索到任何结果！
+                                </p></div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+                    {% if page.has_previous or page.has_next %}
+                            {% if page.has_previous %}
+                            <a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"
+                               title="当前第&nbsp;{{ page.number }}&nbsp;页，共&nbsp;{{ paginator.num_pages }}&nbsp;页">
+                            <div class="load-more-group">
+                                <button class="load-more" >上一页</button>
+                            </div>
+                            </a>
+                            {% endif %}
+
+
+                            {% if page.has_next %}
+                            <a href="?q={{ query }}&page={{ page.next_page_number }}"
+                               title="当前第{{ page.number }}页，共{{ paginator.num_pages }}页">
+                                <div class="load-more-group">
+                                    <button class="load-more">下一页</button>
+                                </div>
+                            </a>
+                            {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% include 'common/sidebar.html' %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+
+{% extends 'base/base.html' %}
+{% block title %}
+    付费详情
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/payinfo/payinfo.min.css' %}">
+{% endblock %}
+
+{% block main %}
+     <div class="main">
+        <div class="wrapper">
+            <div class="main-content-wrapper">
+                <div class="advertise-group">
+                    <a href="#">
+                        <img src="http://www.xfz.cn/static/build/images/web-venture-banner.png" alt="">
+                    </a>
+                </div>
+                <ul class="document-list">
+                    {% for payinfo in payinfos %}
+                    <li>
+                        <a href="{% url 'payinfo:download' %}?payinfo_id={{payinfo.pk}}">
+                        <div class="category-group"
+                             style="background-image:url('http://xfz.cn/static/build/images/web-bp-pc.png');"></div>
+                        <div class="document-info">
+                            <p class="document-title">{{payinfo.title}}</p>
+                            <p class="document-desc">{{payinfo.profile}}</p>
+                            <p class="document-price">￥{{payinfo.price}}</p>
+                        </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% include 'common/sidebar.html' %}
+        </div>
+    </div>
+{% endblock %}

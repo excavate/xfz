@@ -1,0 +1,5 @@
+/venv
+/whoosh_index
+*.pyc
+/.idea
+/utils/aliyunsms
