@@ -19,6 +19,7 @@ from apps.news import views
 from django.conf import settings
 from django.conf.urls.static import static
 import debug_toolbar
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -31,5 +32,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ueditor/', include('apps.ueditor.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
+    path("favicon.ico", RedirectView.as_view(url='static/favicon.ico')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT[0])
 

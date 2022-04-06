@@ -165,7 +165,7 @@ class WriteNewsView(View):
 @require_POST
 @permission_required(perm='news.delete_news', login_url='/')
 def delete_news(request):
-    news_id = request.POST('news_id')
+    news_id = request.POST.get('news_id')
     try:
         News.objects.filter(id=news_id).delete()
         return restful.OK()
