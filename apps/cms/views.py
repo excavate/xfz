@@ -167,10 +167,21 @@ class WriteNewsView(View):
 def delete_news(request):
     news_id = request.POST.get('news_id')
     try:
-        News.objects.filter(id=news_id).delete()
-        return restful.OK()
-    except:
-        return restful.params_errors(message='该新闻不存在！')
+        news_rs = News.objects.filter(id=news_id)
+        if news_rs.exists():
+            thumbnail = news_rs.first().thumbnail
+            thumbnail_path = os.path.join(settings.MEDIA_ROOT[0], thumbnail.split('/')[-1])
+            try:
+                os.remove(thumbnail_path)
+                return restful.OK()
+            except OSError:
+                return restful.params_errors(message='不能删除目录！')
+            except:
+                return restful.params_errors(message='删除文件失败')
+            finally:
+                news_rs.delete()
+    except Exception as e:
+        return restful.params_errors(message=e)
 
 
 @require_GET
