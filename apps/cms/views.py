@@ -238,6 +238,8 @@ def delete_news_category(request):
 def upload_file(request):
     file = request.FILES.get('file')
     name = file.name
+    if os.path.exists(os.path.join(settings.MEDIA_ROOT[0], name)):
+        return restful.params_errors(message='该文件已存在！请修改文件名重新上传！')
     with open(os.path.join(settings.MEDIA_ROOT[0], name), 'wb') as fp:
         for chunk in file.chunks():
             fp.write(chunk)
