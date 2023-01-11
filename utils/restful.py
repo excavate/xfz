@@ -9,7 +9,7 @@ class HttpCode(object):
     servererror = 500
 
 
-def result(code=HttpCode.ok, message='', data=None, kwargs=None):  #kwargs接收别的参数
+def result(code=HttpCode.ok, message='', data=None, kwargs=None):  # kwargs接收别的参数
     jason_dict = {'code': code, 'message': message, 'data': data}
     if kwargs and isinstance(kwargs, dict) and kwargs.keys():
         jason_dict.update(kwargs)
